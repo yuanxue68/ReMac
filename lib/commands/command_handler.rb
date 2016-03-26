@@ -1,6 +1,8 @@
 require './lib/response'
 require './lib/commands/internet'
 require './lib/commands/volume'
+require './lib/commands/music'
+
 module Command
   class CommandHandler
     attr_accessor :response
@@ -12,23 +14,25 @@ module Command
 
     def handle_command
       begin
-        command_split = @command.split(" ")
-        case command_split[0].downcase
+        args = @command.split(" ")
+        command = args.shift
+        case command.downcase
         when "music"
-          music = Music.new(command_split, @response)
+          music = Music.new(args)
           music.run_command
+          @response.body = music.response
         when "screenshot"
           screenshot = Screenshot.new(command_split, @response)
           screenshot.run_command
         when "volume"
-          volume = Volume.new(command_split[1])
+          volume = Volume.new(args)
           volume.run_command
           @response.body = volume.response
         when "lock"
           lock = Lock.new(command_split, @response)
           lock.run_command
         when "internet"
-          internet = Internet.new(command_split[1])
+          internet = Internet.new(args)
           internet.run_command
           @response.body = internet.response
         else

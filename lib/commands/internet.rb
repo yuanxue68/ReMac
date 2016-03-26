@@ -1,6 +1,6 @@
 class Internet
-  def initialize(url)
-    @url = url
+  def initialize(args)
+    @url = args.first
   end
 
   def run_command

@@ -1,6 +1,6 @@
 class Volume
-  def initialize(level)
-    @level = level
+  def initialize(args)
+    @level = args.first
   end
 
   def run_command
