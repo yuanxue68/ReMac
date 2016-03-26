@@ -1,10 +1,13 @@
 require 'twilio-ruby'
 require 'sinatra'
 require 'pry'
+require 'dotenv'
 require './lib/commands/command_handler'
 
+Dotenv.load
+
 post '/command' do
-  if params["From"] == "+16472958956"
+  if params["From"] == ENV["NUMBER"]
     handler = Command::CommandHandler.new(params["Body"])
     handler.handle_command
     twiml = Twilio::TwiML::Response.new do |r|
