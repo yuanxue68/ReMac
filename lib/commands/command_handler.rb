@@ -9,41 +9,29 @@ module Command
   class CommandHandler
     attr_accessor :response
     
-    def initialize(command)
-      @command = command
+    def initialize(text)
+      @text = text
       @response = Response.new 
+      @commands = ["music", "screenshot", "volume", "lock", "internet"]
     end
 
     def handle_command
       begin
-        args = @command.split(" ")
+        args = @text.split(" ")
         command = args.shift
-        case command.downcase
-        when "music"
-          music = Music.new(args)
-          music.run_command
-          @response.body = music.response
-        when "screenshot"
-          screenshot = Screenshot.new(args)
-          screenshot.run_command
-          @response.body = "screenshot"
-          @response.media = screenshot.response 
-        when "volume"
-          volume = Volume.new(args)
-          volume.run_command
-          @response.body = volume.response
-        when "lock"
-          lock = Lock.new
-          lock.run_command
-          @response.body = lock.response
-        when "internet"
-          internet = Internet.new(args)
-          internet.run_command
-          @response.body = internet.response
+        if @commands.include?(command.downcase)
+          instance = Object.const_get(command.downcase.capitalize).new(args)
+          instance.run_command
+          if instance.media?
+            @response.media = instance.response
+          else
+            @response.body = instance.response
+          end
         else
-          @response.body = "unrecognized command"
+          @response.body = "Unrecognized command"
         end
       rescue Exception => e
+        binding.pry
         @response.body = "an error has occured while processing command"
       end
     end
