@@ -8,6 +8,10 @@ A Ruby program that allow you to control your Mac with sms texts
 ## Commands
 ####Music 
 ######launch
+Open up iTunes
+```
+music launch
+```
 
 ######play
 play music on iTunes
