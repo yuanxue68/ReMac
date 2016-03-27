@@ -3,6 +3,7 @@ require './lib/commands/internet'
 require './lib/commands/volume'
 require './lib/commands/music'
 require './lib/commands/screenshot'
+require './lib/commands/lock'
 
 module Command
   class CommandHandler
@@ -32,8 +33,9 @@ module Command
           volume.run_command
           @response.body = volume.response
         when "lock"
-          lock = Lock.new(command_split, @response)
+          lock = Lock.new
           lock.run_command
+          @response.body = lock.response
         when "internet"
           internet = Internet.new(args)
           internet.run_command
@@ -41,7 +43,7 @@ module Command
         else
           @response.body = "unrecognized command"
         end
-      rescue 
+      rescue Exception => e
         @response.body = "an error has occured while processing command"
       end
     end
