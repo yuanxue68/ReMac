@@ -2,6 +2,7 @@ require './lib/response'
 require './lib/commands/internet'
 require './lib/commands/volume'
 require './lib/commands/music'
+require './lib/commands/screenshot'
 
 module Command
   class CommandHandler
@@ -22,8 +23,10 @@ module Command
           music.run_command
           @response.body = music.response
         when "screenshot"
-          screenshot = Screenshot.new(command_split, @response)
+          screenshot = Screenshot.new(args)
           screenshot.run_command
+          @response.body = "screenshot"
+          @response.media = screenshot.response 
         when "volume"
           volume = Volume.new(args)
           volume.run_command

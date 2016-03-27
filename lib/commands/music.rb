@@ -1,6 +1,6 @@
 class Music
   def initialize(args)
-    @command = args[0].downcase
+    @command = args[0].downcase if args && args[0]
     @track = args[1]
   end
 
